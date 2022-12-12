@@ -6,21 +6,23 @@ pg.init()
 pantalla_principal = pg.display.set_mode((800,600))
 pg.display.set_caption("Pong")
 
-game_over = False
-
-
 #definir la tasa de refresco de nuestro bucle de fotogramas fps= fotograma por segundo
 cronometro = pg.time.Clock()
 
-
+#defino objetos pelota y raqueta
 pelota = Pelota(400,300)
 raqueta1 = Raqueta(10,300)
 raqueta2 = Raqueta(790,300)
 
+# asignar velocidad
+raqueta1.vy=5
+pelota.vx=5
+
 game_over = False
 
+
 while not game_over:
-    #imprimir los milisegundos que tarda mcada fotograma actualmente
+
     vt = cronometro.tick(300)#variable para comtrolar la velocidad entre fotogramas
    #print(vt)
 
@@ -36,10 +38,12 @@ while not game_over:
     pelota.mover()
 
     pantalla_principal.fill((0,128,94)) #pintando pantalla
-    pg.draw.line(pantalla_principal, (255,255,255),(400,0),(400,600),width=2) #pintando line blanca del centro del campo
+    
+    pelota.marcador(pantalla_principal) #pintado marcador
+    pg.draw.line(pantalla_principal, (255,255,255),(400,0),(400,600), width=2) #pintando line blanca del centro del campo
+    pelota.dibujar(pantalla_principal)#pintado pelota
+    raqueta1.dibujar(pantalla_principal)#pintado raqueta1
+    raqueta2.dibujar(pantalla_principal)#pintado raqueta2
 
-
-    pelota.dibujar(pantalla_principal)
-    raqueta1.dibujar(pantalla_principal)
-    raqueta2.dibujar(pantalla_principal)
-    pg.display.flip()       
+   
+    pg.display.flip()      
