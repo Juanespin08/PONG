@@ -42,8 +42,8 @@ class Pelota:
   
     def marcador(self,pantalla_principal):
 
-        marcadorIzquierda = self.font.render(str(self.pelota.contadorDerecha),0, (255,255,0))
-        marcadorDerecha = self.font.render(str(self.pelota.contadorIzquierda),0, (255,255,0))
+        marcadorIzquierda = self.font.render(str(self.contadorDerecha),0, (255,255,0))
+        marcadorDerecha = self.font.render(str(self.contadorIzquierda),0, (255,255,0))
         pantalla_principal.blit(marcadorDerecha, (200, 50))
         pantalla_principal.blit(marcadorIzquierda, (600, 50))
 
