@@ -15,15 +15,16 @@ raqueta1 = Raqueta(10,300)
 raqueta2 = Raqueta(790,300)
 
 # asignar velocidad
-raqueta1.vy=5
-pelota.vx=5
+raqueta1.vy=800
+raqueta1.vy=4
+pelota.vx=4
 
 game_over = False
 
 
 while not game_over:
 
-    vt = cronometro.tick(300)#variable para comtrolar la velocidad entre fotogramas
+    vt = cronometro.tick(200)#variable para comtrolar la velocidad entre fotogramas
    #print(vt)
 
 
@@ -38,7 +39,26 @@ while not game_over:
     pelota.mover()
 
     pantalla_principal.fill((0,128,94)) #pintando pantalla
-    
+
+    #logica de choque
+    """
+    if pelota.derecha >= raqueta2.izquierda and \
+       pelota.izquierda <= raqueta2.derecha and \
+       pelota.abajo >= raqueta2.arriba and\
+       pelota.arriba <= raqueta2.abajo :
+       pelota.vx *= -1  
+
+
+    if pelota.derecha >= raqueta1.izquierda and \
+       pelota.izquierda <= raqueta1.derecha and \
+       pelota.abajo >= raqueta1.arriba and\
+       pelota.arriba <= raqueta1.abajo :
+       pelota.vx *= -1    
+   """
+   # pelota.comprobar_choque(raqueta1,raqueta2)
+
+    pelota.comprobar_choquev2(raqueta1,raqueta2)
+
     pelota.marcador(pantalla_principal) #pintado marcador
     pg.draw.line(pantalla_principal, (255,255,255),(400,0),(400,600), width=2) #pintando line blanca del centro del campo
     pelota.dibujar(pantalla_principal)#pintado pelota
