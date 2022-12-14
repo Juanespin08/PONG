@@ -97,14 +97,6 @@ class Pelota:
                break   #cuando se pasa un retur vacio es para que salga del bucle es como break
     #def funcionespacial(*args):
     
-
-
-
-
-
-
-
-
 class Raqueta:
     def __init__(self,pos_x,pos_y,w=20,h=100,color=(255,255,255),vx=1,vy=1):
         self.pos_x = pos_x
