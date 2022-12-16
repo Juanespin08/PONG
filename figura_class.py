@@ -1,15 +1,14 @@
 import pygame as pg
-
+BLANCO = (255,255,255)
 class Pelota:
-    def __init__(self,pos_x,pos_y,radio=20,color=(255,255,255),vx=1,vy=1):
+    def __init__(self,pos_x,pos_y,radio=20,color=BLANCO,vx=1,vy=1):
         self.pos_x = pos_x
         self.pos_y =pos_y 
         self.radio = radio
         self.color = color
         self.vx = vx
         self.vy = vy
-        self.contadorDerecha = 0
-        self.contadorIzquierda = 0
+        
         self.font = pg.font.Font(None, 40)
    
     def dibujar(self,pantalla):
@@ -29,34 +28,26 @@ class Pelota:
 #y vuelva a aparecer rebotando hacia el lado contrario desde donde vino
  #contar el gol
         if self.pos_x >= x_max+self.radio*10:#limite derecho
-            self.contadorIzquierda += 1
-
+            
             self.pos_x = x_max//2
             self.pos_y = y_max//2
-
             self.vx *= -1
             self.vy *= -1
+
+            return "right"
             
 
         if self.pos_x < 0-self.radio*10:#limite izquierdo
-            self.contadorDerecha +=1
-
-            
+           
             self.pos_x = x_max//2
             self.pos_y = y_max//2
-
             self.vx *= -1
             self.vy *= -1
-           
-  
-    def marcador(self,pantalla_principal):
 
-        marcadorIzquierda = self.font.render(str(self.contadorDerecha),0, (255,255,0))
-        marcadorDerecha = self.font.render(str(self.contadorIzquierda),0, (255,255,0))
-        pantalla_principal.blit(marcadorDerecha, (200, 50))
-        pantalla_principal.blit(marcadorIzquierda, (600, 50))
+            return "left"
+           
     
-    @property
+    @property #llamar funciones como una variable
     def derecha(self):
         return  self.pos_x + self.radio
 
@@ -86,7 +77,8 @@ class Pelota:
            self.izquierda <= r1.derecha and \
            self.abajo >= r1.arriba and\
            self.arriba <= r1.abajo :
-           self.vx *= -1    
+           self.vx *= -1  
+
     def comprobar_choquev2(self,*raquetas):
         for r in raquetas: 
             if self.derecha >= r.izquierda and \
@@ -98,7 +90,7 @@ class Pelota:
     #def funcionespacial(*args):
     
 class Raqueta:
-    def __init__(self,pos_x,pos_y,w=20,h=100,color=(255,255,255),vx=1,vy=1):
+    def __init__(self,pos_x,pos_y,w=20,h=100,color= BLANCO ,vx=1,vy=1):
         self.pos_x = pos_x
         self.pos_y =pos_y 
         self.w = w
