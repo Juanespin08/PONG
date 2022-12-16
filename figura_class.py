@@ -8,7 +8,8 @@ class Pelota:
         self.color = color
         self.vx = vx
         self.vy = vy
-        
+        self.contadorDerecha = 0
+        self.contadorIzquierda = 0
         self.font = pg.font.Font(None, 40)
    
     def dibujar(self,pantalla):
@@ -28,7 +29,7 @@ class Pelota:
 #y vuelva a aparecer rebotando hacia el lado contrario desde donde vino
  #contar el gol
         if self.pos_x >= x_max+self.radio*10:#limite derecho
-            
+            self.contadorDerecha += 1
             self.pos_x = x_max//2
             self.pos_y = y_max//2
             self.vx *= -1
@@ -38,7 +39,7 @@ class Pelota:
             
 
         if self.pos_x < 0-self.radio*10:#limite izquierdo
-           
+            self.contadorIzquierda += 1
             self.pos_x = x_max//2
             self.pos_y = y_max//2
             self.vx *= -1
@@ -79,16 +80,21 @@ class Pelota:
            self.arriba <= r1.abajo :
            self.vx *= -1  
 
-    def comprobar_choquev2(self,*raquetas):
+    def comprobar_choqueV2(self,*raquetas):
         for r in raquetas: 
             if self.derecha >= r.izquierda and \
                self.izquierda <= r.derecha and \
                self.abajo >= r.arriba and\
                self.arriba <= r.abajo :
-               self.vx *= -1  
-               break   #cuando se pasa un retur vacio es para que salga del bucle es como break
+                    self.vx *= -1  
+                    break   #cuando se pasa un retur vacio es para que salga del bucle es como break
     #def funcionespacial(*args):
-    
+
+
+
+
+
+
 class Raqueta:
     def __init__(self,pos_x,pos_y,w=20,h=100,color= BLANCO ,vx=1,vy=1):
         self.pos_x = pos_x

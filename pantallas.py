@@ -7,9 +7,11 @@ AMARILLO=(255,255,0)
 ROJO = (255,0,0)
 NARANJA=(255, 128, 0)
 VERDE=(0,128,94)
+GRANATE=(192, 57, 43)
 FPS = 280
 PRIMER_AVISO = 10000
 SEGUNDO_AVISO = 5000
+
 class Partida:
     def __init__(self):
         pg.init()
@@ -19,8 +21,8 @@ class Partida:
         self.pelota = Pelota(ANCHO//2,ALTO//2,vx=2,vy=2)
         self.raqueta1 = Raqueta(10,ALTO//2,vy=5)
         self.raqueta2 = Raqueta(ANCHO-10,ALTO//2,vy=5)
-        self.font = pg.font.Font("fonts/pressStart2P.ttf", 15)
-        self.fuenteTemp = pg.font.Font("fonts/pressStart2P.ttf",30) 
+        self.font = pg.font.Font("fonts/HanaleiFill-Regular.ttf", 15)
+        self.fuenteTemp = pg.font.Font("fonts/HanaleiFill-Regular.ttf",30) 
         self.marcador1 = 0
         self.marcador2 = 0
         self.quienMarco = ""
@@ -85,7 +87,8 @@ class Partida:
             self.mostrar_jugador()
             
             pg.display.flip()
-        pg.quit()       
+        pg.quit()   
+
     def linea_disc(self):
         cont_linea1=0
         cont_linea2=50
@@ -134,3 +137,36 @@ class Partida:
                 self.contadorFotograma = 0
 
         return self.colorFondo
+
+
+class Menu:
+    def __init__(self):
+        pg.init()
+        self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
+        pg.display.set_caption("Menu")
+        self.tasa_refresco = pg.time.Clock()
+
+        self.imagenFondo = pg.image.load("images/portada.jpg")
+        self.fuenteMenu = pg.font.Font("fonts/HanaleiFill-Regular.ttf", 20)
+
+    def bucle_pantalla(self):
+        game_over = False
+
+        while not game_over:
+            for evento in pg.event.get():
+                if evento.type == pg.QUIT:
+                    game_over = True
+
+            if evento.type == pg.KEYDOWN:
+                if evento.key == pg.K_RETURN:
+                    game_over = True
+                    return "jugar"          
+
+            self.pantalla_principal.blit(self.imagenFondo,(0,0))
+            menu = self.fuenteMenu.render("Pulsa ENTER para jugar",0,GRANATE)
+            self.pantalla_principal.blit(menu, (155,ALTO//2) )
+            pg.display.flip()
+
+
+
+
