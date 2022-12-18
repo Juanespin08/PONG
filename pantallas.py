@@ -1,20 +1,9 @@
 import pygame as pg
 from figura_class import Pelota,Raqueta
-ANCHO = 800
-ALTO = 600
-BLANCO=(255,255,255)
-AMARILLO=(255,255,0)
-ROJO = (255,0,0)
-NARANJA=(255, 128, 0)
-VERDE=(0,128,94)
-GRANATE=(192, 57, 43)
-FPS = 280
-PRIMER_AVISO = 10000
-SEGUNDO_AVISO = 5000
-
+from utils import *
 class Partida:
     def __init__(self):
-        pg.init()
+        
         self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
         pg.display.set_caption("Pong")
         self.tasa_refresco = pg.time.Clock()
@@ -26,9 +15,7 @@ class Partida:
         self.marcador1 = 0
         self.marcador2 = 0
         self.quienMarco = ""
-        self.temporizador = 15000 #en milisegundos 
-
-        self.temporizador = 15000 #en milisegundos
+        self.temporizador = TIEMPO_LIMITE #en milisegundos 
         self.colorFondo = VERDE  
         self.contadorFotograma=0
 
@@ -40,54 +27,31 @@ class Partida:
             salto_tiempo = self.tasa_refresco.tick(FPS)#1000/280 = cantidad de fotograma por segundo pero en milisegundos
             self.temporizador -= salto_tiempo
 
-
-
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
                     game_over = True
+
             self.raqueta1.mover(pg.K_w,pg.K_s)
             self.raqueta2.mover(pg.K_UP,pg.K_DOWN)
             self.quienMarco = self.pelota.mover()
-            """
-
-
-            if self.temporizador > PRIMER_AVISO:    
-                self.pantalla_principal.fill(VERDE)
-            elif self.temporizador > SEGUNDO_AVISO:
-                self.pantalla_principal.fill(NARANJA)
-            else:
-                self.pantalla_principal.fill(ROJO)
-            """ 
-            if self.temporizador > SEGUNDO_AVISO and self.temporizador <= PRIMER_AVISO:
-                self.pantalla_principal.fill(NARANJA)
-            elif self.temporizador <= SEGUNDO_AVISO:
-                self.pantalla_principal.fill(ROJO)
-            else:
-                self.pantalla_principal.fill(VERDE)  
-
-
+       
+            
             self.pantalla_principal.fill(self.fijar_fondo())
-
-
+           
             self.pelota.comprobar_choqueV2(self.raqueta2,self.raqueta1)
-
             self.marcador()
             self.linea_disc()
           
             tiempo = self.font.render( str( int(self.temporizador/1000) ),0, ROJO)
             self.pantalla_principal.blit(tiempo, (400, 20 ))
-
-
-
-
-
             self.pelota.dibujar(self.pantalla_principal)
             self.raqueta1.dibujar(self.pantalla_principal)
             self.raqueta2.dibujar(self.pantalla_principal)
             self.mostrar_jugador()
-            
+
             pg.display.flip()
-        pg.quit()   
+
+        return self.resultado_final()
 
     def linea_disc(self):
         cont_linea1=0
@@ -96,18 +60,21 @@ class Partida:
             pg.draw.line(self.pantalla_principal, BLANCO, (400,cont_linea1), (400,cont_linea2), width=10)
             cont_linea1 += 70
             cont_linea2 += 70
+
     def mostrar_jugador(self):
-        jugador1 = self.font.render("Jugador 1",0, AMARILLO)
-        jugador2 = self.font.render( "Jugador 2",0, AMARILLO)
+        jugador1 = self.font.render("Jugador 1",0, BLANCO)
+        jugador2 = self.font.render( "Jugador 2",0, BLANCO)
         self.pantalla_principal.blit(jugador1, (155, 30))
         self.pantalla_principal.blit(jugador2, (555, 30 ))
+
     def marcador(self):
         if self.quienMarco == "right":
             self.marcador1 += 1
         elif self.quienMarco == "left":
             self.marcador2 += 1  
-        marcadorIzquierda = self.font.render(str( self.marcador2),0, AMARILLO)
-        marcadorDerecha = self.font.render( str(self.marcador1),0, AMARILLO)
+
+        marcadorIzquierda = self.font.render(str( self.marcador2),0, BLANCO)
+        marcadorDerecha = self.font.render( str(self.marcador1),0, BLANCO)
         self.pantalla_principal.blit(marcadorDerecha, (200, 50))
         self.pantalla_principal.blit(marcadorIzquierda, (600, 50 ))
         self.pantalla_principal.blit(marcadorIzquierda, (600, 50 ))
@@ -136,12 +103,19 @@ class Partida:
                     self.colorFondo = VERDE
                 self.contadorFotograma = 0
 
-        return self.colorFondo
+    def resultado_final(self):
+        if self.marcador1 > self.marcador2:
+            return f"Gana el Jugador 2, resultado Jugador1: {self.marcador2} Jugador2: {self.marcador1}"
+        elif self.marcador2 > self.marcador1:
+            return f"Gana el Jugador 1, resultado Jugador1: {self.marcador2} Jugador2: {self.marcador1}"
+        else:      
+            return f"Empate, resultado Jugador1: {self.marcador2} Jugador2: {self.marcador1}" 
+             
 
 
 class Menu:
     def __init__(self):
-        pg.init()
+       
         self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
         pg.display.set_caption("Menu")
         self.tasa_refresco = pg.time.Clock()
@@ -157,15 +131,80 @@ class Menu:
                 if evento.type == pg.QUIT:
                     game_over = True
 
-            if evento.type == pg.KEYDOWN:
-                if evento.key == pg.K_RETURN:
-                    game_over = True
-                    return "jugar"          
+                if evento.type == pg.KEYDOWN:#pulsa enter
+                    if evento.key == pg.K_RETURN:
+                        game_over = True#con esto cierra la ventaja de menu
+                    elif evento.key == pg.K_r:  
+                        game_over = True       
 
             self.pantalla_principal.blit(self.imagenFondo,(0,0))
-            menu = self.fuenteMenu.render("Pulsa ENTER para jugar",0,GRANATE)
-            self.pantalla_principal.blit(menu, (155,ALTO//2) )
+            jugar = self.fuenteMenu.render("Pulsa ENTER para jugar",0,GRANATE)
+            record = self.fuenteMenu.render("Pulsa R para ver records",0,GRANATE)
+            self.pantalla_principal.blit(jugar, (155,ALTO//2) )
+            self.pantalla_principal.blit(record, (155,ALTO//2.4) )
             pg.display.flip()
+
+class Resultado:
+    def __init__(self):
+
+        self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
+        pg.display.set_caption("Resultado")
+        self.tasa_refresco = pg.time.Clock()
+        self.fuenteResultado = pg.font.Font("fonts/HanaleiFill-Regular.ttf", 12)
+        self.resultado = ""
+
+
+    def bucle_pantalla(self):
+        game_over = False
+
+        while not game_over:
+            for evento in pg.event.get():
+                if evento.type == pg.QUIT:
+                    game_over = True
+
+                if evento.type == pg.KEYDOWN:#pulsa enter
+                    if evento.key == pg.K_RETURN:
+                        game_over = True#con esto cierra la ventaja de resultado
+                        #return "jugar"#retorna          
+
+
+            self.pantalla_principal.fill(BLANCO)
+            result = self.fuenteResultado.render(self.resultado,0,GRANATE)
+            self.pantalla_principal.blit(result, (135,ALTO//2) )
+            pg.display.flip()
+
+    def recibir_resultado(self,resultado):
+        self.resultado = resultado
+
+
+
+
+
+class Records:
+    def __init__(self):
+
+        self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
+        pg.display.set_caption("Records")
+        self.tasa_refresco = pg.time.Clock()
+        self.fuenteResultado = pg.font.Font("fonts/HanaleiFill-Regular.ttf", 12)
+
+    def bucle_pantalla(self):
+        game_over = False
+
+        while not game_over:
+            for evento in pg.event.get():
+                if evento.type == pg.QUIT:
+                    game_over = True
+
+            if evento.type == pg.KEYDOWN:#pulsa enter
+                if evento.key == pg.K_RETURN:
+                    game_over = True#con esto cierra la ventaja de resultado        
+
+
+            self.pantalla_principal.fill(BLANCO)
+            result = self.fuenteResultado.render("RECORDS",0,GRANATE)
+            self.pantalla_principal.blit(result, (135,ALTO//2) )
+            pg.display.flip()          
 
 
 

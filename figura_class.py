@@ -1,5 +1,5 @@
 import pygame as pg
-BLANCO = (255,255,255)
+from utils import BLANCO
 class Pelota:
     def __init__(self,pos_x,pos_y,radio=20,color=BLANCO,vx=1,vy=1):
         self.pos_x = pos_x
@@ -88,7 +88,7 @@ class Pelota:
                self.arriba <= r.abajo :
                     self.vx *= -1  
                     break   #cuando se pasa un retur vacio es para que salga del bucle es como break
-    #def funcionespacial(*args):
+    #def funcionespecial(*args):
 
 
 
