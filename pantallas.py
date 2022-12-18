@@ -18,7 +18,7 @@ class Partida:
         self.temporizador = TIEMPO_LIMITE#en milisegundos
         self.colorFondo = VERDE  
         self.contadorFotograma=0
-        self.sonido = pg.mixer.Sound("songs/pelota.mp3")
+        self.sonido = pg.mixer.Sound("songs/pelota.wav")
 
 
     def bucle_fotograma(self):
@@ -138,7 +138,7 @@ class Menu:
 
         self.imagenFondo = pg.image.load("images/portada.jpg")
         self.fuenteMenu = pg.font.Font("fonts/HanaleiFill-Regular.ttf", 20)
-        self.musica = pg.mixer.Sound("songs/inicio.mp3")
+        self.musica = pg.mixer.Sound("songs/inicio.wav")
 
     def bucle_pantalla(self):
         
@@ -173,7 +173,7 @@ class Resultado:
         self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
         pg.display.set_caption("Resultado")
         self.tasa_refresco = pg.time.Clock()
-        self.fuenteResultado = pg.font.Font("fonts/pressStart2P.ttf", 12)
+        self.fuenteResultado = pg.font.Font("fonts/HanaleiFill-Regular.ttf", 12)
         self.resultado = ""
     def bucle_pantalla(self):
         game_over = False
